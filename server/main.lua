@@ -10,6 +10,7 @@ local updatingCops = false
 ---@param minGrade? integer
 ---@return boolean?
 function IsLeoAndOnDuty(player, minGrade)
+    if not player or not player.PlayerData or not player.PlayerData.job then return false end
     local job = player.PlayerData.job
     if job and job.type == 'leo' and job.onduty then
         return job.grade.level >= (minGrade or 0)
@@ -555,6 +556,40 @@ RegisterNetEvent('police:server:SetTracker', function(targetId)
         exports.qbx_core:Notify(src, locale('success.put_anklet_on', target.PlayerData.charinfo.firstname, target.PlayerData.charinfo.lastname), 'success')
         TriggerClientEvent('police:client:SetTracker', targetId, true)
     end
+end)
+
+RegisterNetEvent('police:server:AddVehicleTrunkItems', function(plate, carItems)
+    local src = source
+    local player = exports.qbx_core:GetPlayer(src)
+    if not player or player.PlayerData.job.type ~= 'leo' then return end
+
+    CreateThread(function()
+        Wait(3000) -- Wait 3 seconds for vehicle to be fully spawned and registered
+
+        -- Construct the trunk inventory ID
+        local trunkId = 'trunk' .. plate
+
+        -- Add each configured item to the trunk
+        local itemsAdded = 0
+        for _, item in pairs(carItems) do
+            if item.name and item.amount > 0 then
+                local success, response = exports.ox_inventory:AddItem(trunkId, item.name, item.amount, item.info or {})
+                if success then
+                    print(('Added %d %s to police vehicle trunk %s'):format(item.amount, item.name, plate))
+                    itemsAdded = itemsAdded + 1
+                else
+                    print(('Failed to add %s to trunk %s: %s'):format(item.name, plate, response))
+                end
+                Wait(100) -- Small delay between items
+            end
+        end
+
+        if itemsAdded > 0 then
+            exports.qbx_core:Notify(src, locale('success.vehicle_items_partial', itemsAdded), 'success')
+        else
+            exports.qbx_core:Notify(src, locale('error.vehicle_items_failed'), 'error')
+        end
+    end)
 end)
 
 AddEventHandler('onServerResourceStart', function(resource)

@@ -20,20 +20,26 @@ end
 local function setCarItemsInfo()
     local items = {}
     for _, item in pairs(config.carItems) do
-        local itemInfo = exports.ox_inventory:Items()[item.name:lower()]
-        items[item.slot] = {
-            name = itemInfo.name,
-            amount = tonumber(item.amount),
-            info = item.info,
-            label = itemInfo.label,
-            description = itemInfo.description or '',
-            weight = itemInfo.weight,
-            type = itemInfo.type,
-            unique = itemInfo.unique,
-            useable = itemInfo.useable,
-            image = itemInfo.image,
-            slot = item.slot
-        }
+        if item.name then
+            local itemInfo = exports.ox_inventory:Items()[item.name:lower()]
+            if itemInfo then
+                items[item.slot] = {
+                    name = itemInfo.name,
+                    amount = tonumber(item.amount),
+                    info = item.info,
+                    label = itemInfo.label,
+                    description = itemInfo.description or '',
+                    weight = itemInfo.weight,
+                    type = itemInfo.type,
+                    unique = itemInfo.unique,
+                    useable = itemInfo.useable,
+                    image = itemInfo.image,
+                }
+            else
+                ----  If the item is not found in the ox_inventory items, log a warning instead of an error in console
+                print(('Warning: Item "%s" not found in ox_inventory items'):format(item.name))
+            end
+        end
     end
     config.carItems = items
 end
@@ -124,12 +130,14 @@ local function takeOutVehicle(vehicleInfo)
     if config.vehicleSettings[vehicleInfo] then
         if config.vehicleSettings[vehicleInfo].extras then
             qbx.setVehicleExtras(veh, config.vehicleSettings[vehicleInfo].extras)
+        else
         end
         if config.vehicleSettings[vehicleInfo].livery then
             SetVehicleLivery(veh, config.vehicleSettings[vehicleInfo].livery)
         end
     end
     SetVehicleEngineOn(veh, true, true, false)
+    TriggerServerEvent('police:server:AddVehicleTrunkItems', plate, config.carItems)
 end
 
 local function addGarageMenuItems(destinationOptions, sourceOptions)

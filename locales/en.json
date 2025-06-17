@@ -27,7 +27,8 @@
         "have_evidence_bag": "You must have an empty evidence bag with you",
         "no_driver_license": "No drivers license",
         "not_cuffed_dead": "Civilian isn't cuffed or dead",
-        "no_rob": "This person isn't cuffed, dead, or hands up"
+        "no_rob": "This person isn't cuffed, dead, or hands up",
+        "vehicle_items_failed": "Failed to equip vehicle with items"
     },
     "success": {
         "uncuffed": "You have been uncuffed",
@@ -44,7 +45,8 @@
         "vehicle_flagged": "Vehicle %s has been flagged for %s",
         "impound_vehicle_removed": "Vehicle taken out of impound!",
         "impounded": "Vehicle impounded",
-        "escapedcuff": "You slipped out of the cuffs!"
+        "escapedcuff": "You slipped out of the cuffs!",
+        "vehicle_items_partial": "Police vehicle equipped with %d items"
     },
     "info": {
         "mr": "Mr.",

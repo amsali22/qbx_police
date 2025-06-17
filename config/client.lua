@@ -82,7 +82,7 @@ return {
             policet = 'Police Car 6',
             sheriff = 'Sheriff Car 1',
             sheriff2 = 'Sheriff Car 2',
-    
+
         },
         [2] = { -- Grade 2
             police = 'Police Car 1',
@@ -149,14 +149,14 @@ return {
     },
 
     carItems = {
-        {name = 'heavyarmor', amount = 2, info = {}, type = 'item', slot = 1},
-        {name = 'empty_evidence_bag', amount = 10, info = {}, type = 'item', slot = 2},
-        {name = 'police_stormram', amount = 1, info = {}, type = 'item', slot = 3},
+        {name = 'heavyarmor', amount = 2, info = {}, type = 'item'},
+        {name = 'empty_evidence_bag', amount = 10, info = {}, type = 'item'},
+        {name = 'police_stormram', amount = 1, info = {}, type = 'item'},
     },
 
     vehicleSettings = {
-        car1 = { --- Model name
-            extras = {
+        police = { --- Model name
+            car1 = {
                 [1] = true, -- on/off
                 [2] = true,
                 [3] = true,

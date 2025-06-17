@@ -214,15 +214,12 @@ lib.addCommand('flagplate', {
  }, function(source, args)
     local player = exports.qbx_core:GetPlayer(source)
     if not checkLeoAndOnDuty(player) then return end
-    local reason = {}
-    for i = 2, #args, 1 do
-        reason[#reason+1] = args[i]
-    end
-    Plates[args[1]:upper()] = {
+    local reason = args.reason or 'No reason provided'
+    Plates[args.plate:upper()] = {
         isflagged = true,
-        reason = table.concat(reason, ' ')
+        reason = reason
     }
-    exports.qbx_core:Notify(source, locale('info.vehicle_flagged', args[1]:upper(), table.concat(reason, ' ')), 'inform')
+    exports.qbx_core:Notify(source, locale('info.vehicle_flagged', args.plate:upper(), reason), 'inform')
 end)
 
 lib.addCommand('unflagplate', {
@@ -257,7 +254,7 @@ lib.addCommand('plateinfo', {
 }, function(source, args)
     local player = exports.qbx_core:GetPlayer(source)
     if not checkLeoAndOnDuty(player) then return end
-    if not Plates or Plates[args.plate:upper()] then
+    if not Plates or not Plates[args.plate:upper()] then
         return exports.qbx_core:Notify(source, locale('error.vehicle_not_flag'), 'error')
     end
     if Plates[args.plate:upper()].isflagged then
