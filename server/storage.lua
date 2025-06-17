@@ -21,3 +21,14 @@ end
 function ImpoundForever(body, engine, fuel, plate)
     MySQL.query('UPDATE player_vehicles SET state = 2, body = ?, engine = ?, fuel = ? WHERE plate = ?', {body, engine, fuel, plate})
 end
+
+--- returns vehicle mods for a given plate
+lib.callback.register('police:server:GetVehicleProperties', function(source, plate)
+    if not plate then return nil end
+
+    local result = MySQL.scalar.await('SELECT mods FROM player_vehicles WHERE plate = ?', {plate})
+    if result then
+        return json.decode(result)
+    end
+    return nil
+end)

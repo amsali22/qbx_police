@@ -155,8 +155,8 @@ return {
     },
 
     vehicleSettings = {
-        police = { --- Model name
-            car1 = {
+        car1 = { --- Model name
+            extras = {
                 [1] = true, -- on/off
                 [2] = true,
                 [3] = true,

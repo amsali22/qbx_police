@@ -113,7 +113,7 @@ lib.callback.register('qbx_policejob:server:spawnVehicle', function(source, mode
     if not netId or netId == 0 or not veh or veh == 0 then return end
 
     SetVehicleNumberPlateText(veh, plate)
-    if giveKeys == true then exports.qbx_vehiclekeys:GiveKeys(source, veh) end
+    if giveKeys == true then exports.qbx_vehiclekeys:GiveKeys(source, veh, false) end
 
     if vehId then Entity(veh).state.vehicleid = vehId end
     return netId
