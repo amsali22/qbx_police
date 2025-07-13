@@ -124,7 +124,7 @@ local function isPlateFlagged(plate)
 end
 
 
-lib.callback.register('qbx_police:server:isPlateFlagged', function(_, plate)
+lib.callback.register('police:server:isPlateFlagged', function(_, plate)
     return isPlateFlagged(plate)
 end)
 
@@ -142,9 +142,9 @@ lib.callback.register('qbx_police:server:isPoliceForcePresent', isPoliceForcePre
 
 if GetConvar('qbx:enablebridge', 'true') == 'true' then
     local QBCore = exports['qb-core']:GetCoreObject()
-    ---@deprecated use qbx_police:server:isPlateFlagged
+    ---@deprecated use police:server:isPlateFlagged
     QBCore.Functions.CreateCallback('police:IsPlateFlagged', function(_, cb, plate)
-        lib.print.warn(GetInvokingResource(), 'invoked deprecated callback police:IsPlateFlagged. Use qbx_police:server:isPlateFlagged instead.')
+        lib.print.warn(GetInvokingResource(), 'invoked deprecated callback police:IsPlateFlagged. Use police:server:isPlateFlagged instead.')
         cb(isPlateFlagged(plate))
     end)
 
@@ -324,6 +324,7 @@ RegisterNetEvent('police:server:SetHandcuffStatus', function(isHandcuffed)
     local player = exports.qbx_core:GetPlayer(source)
     if not player then return end
     player.Functions.SetMetaData('ishandcuffed', isHandcuffed)
+    Player(source).state.invBusy = isHandcuffed
 end)
 
 RegisterNetEvent('heli:spotlight', function(state)
