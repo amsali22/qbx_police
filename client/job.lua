@@ -19,11 +19,12 @@ end
 
 local function setCarItemsInfo()
     local items = {}
-    for _, item in pairs(config.carItems) do
+    for i, item in pairs(config.carItems) do
         if item.name then
             local itemInfo = exports.ox_inventory:Items()[item.name:lower()]
             if itemInfo then
-                items[item.slot] = {
+                local slot = item.slot or i  -- Use item.slot if available, otherwise use the index
+                items[slot] = {
                     name = itemInfo.name,
                     amount = tonumber(item.amount),
                     info = item.info,
@@ -37,7 +38,7 @@ local function setCarItemsInfo()
                 }
             else
                 ----  If the item is not found in the ox_inventory items, log a warning instead of an error in console
-                print(('Warning: Item "%s" not found in ox_inventory items'):format(item.name))
+                lib.print.warn(('Warning: Item "%s" not found in ox_inventory items'):format(item.name))
             end
         end
     end
