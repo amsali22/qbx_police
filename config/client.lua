@@ -151,7 +151,7 @@ return {
     carItems = {
         {name = 'water', amount = 2, info = {}, type = 'item', slot = 1},
         {name = 'bandage', amount = 10, info = {}, type = 'item', slot = 2},
-        {name = 'police_stormram', amount = 1, info = {}, type = 'item', slot = 3},
+        { name = 'WEAPON_BAT', amount = 1,  info = {}, type = 'item', slot = 3 },
     },
 
     vehicleSettings = {

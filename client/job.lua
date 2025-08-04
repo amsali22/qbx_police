@@ -17,34 +17,6 @@ local function openFingerprintUi()
     SetNuiFocus(true, true)
 end
 
-local function setCarItemsInfo()
-    local items = {}
-    for i, item in pairs(config.carItems) do
-        if item.name then
-            local itemInfo = exports.ox_inventory:Items()[item.name:lower()]
-            if itemInfo then
-                local slot = item.slot or i  -- Use item.slot if available, otherwise use the index
-                items[slot] = {
-                    name = itemInfo.name,
-                    amount = tonumber(item.amount),
-                    info = item.info,
-                    label = itemInfo.label,
-                    description = itemInfo.description or '',
-                    weight = itemInfo.weight,
-                    type = itemInfo.type,
-                    unique = itemInfo.unique,
-                    useable = itemInfo.useable,
-                    image = itemInfo.image,
-                }
-            else
-                ----  If the item is not found in the ox_inventory items, log a warning instead of an error in console
-                lib.print.warn(('Warning: Item "%s" not found in ox_inventory items'):format(item.name))
-            end
-        end
-    end
-    config.carItems = items
-end
-
 local function doCarDamage(currentVehicle, veh)
     local smash = false
     local damageOutside = false
@@ -127,7 +99,6 @@ local function takeOutVehicle(vehicleInfo)
 
     assert(veh ~= 0, 'Something went wrong spawning the vehicle')
 
-    setCarItemsInfo()
     SetEntityHeading(veh, coords.w)
     SetVehicleFuelLevel(veh, 100.0)
     if config.vehicleSettings[vehicleInfo] then
