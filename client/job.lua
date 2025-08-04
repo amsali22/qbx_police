@@ -17,6 +17,49 @@ local function openFingerprintUi()
     SetNuiFocus(true, true)
 end
 
+local function setCarItemsInfo(vehicleModel)
+    local items = {}
+    local carItems = config.carItems[vehicleModel]
+
+    if not carItems then return items end
+
+    for i, item in pairs(carItems) do
+        if item.name then
+            -- get item info from ox_inventory
+            local itemInfo = exports.ox_inventory:Items()[item.name:lower()]
+
+            -- If not found, create a basic fallback (for weapons and other items)
+            if not itemInfo then
+                lib.print.warn(('Warning: Item "%s" not found in ox_inventory items'):format(item.name))
+                itemInfo = {
+                    name = item.name,
+                    label = item.name:gsub("_", " "):gsub("^%l", string.upper),
+                    weight = 1000,
+                    type = item.type or 'item',
+                    unique = false,
+                    useable = true,
+                    description = 'Police equipment'
+                }
+            end
+
+            local slot = item.slot or i
+            items[slot] = {
+                name = itemInfo.name,
+                amount = tonumber(item.amount),
+                info = item.info,
+                label = itemInfo.label,
+                description = itemInfo.description or '',
+                weight = itemInfo.weight,
+                type = itemInfo.type,
+                unique = itemInfo.unique,
+                useable = itemInfo.useable,
+                image = itemInfo.image,
+            }
+        end
+    end
+    return items
+end
+
 local function doCarDamage(currentVehicle, veh)
     local smash = false
     local damageOutside = false
@@ -99,6 +142,7 @@ local function takeOutVehicle(vehicleInfo)
 
     assert(veh ~= 0, 'Something went wrong spawning the vehicle')
 
+    local vehicleItems = setCarItemsInfo(vehicleInfo)
     SetEntityHeading(veh, coords.w)
     SetVehicleFuelLevel(veh, 100.0)
     if config.vehicleSettings[vehicleInfo] then
@@ -111,7 +155,7 @@ local function takeOutVehicle(vehicleInfo)
         end
     end
     SetVehicleEngineOn(veh, true, true, false)
-    TriggerServerEvent('police:server:AddVehicleTrunkItems', plate, config.carItems)
+    TriggerServerEvent('police:server:AddVehicleTrunkItems', plate, vehicleItems, vehicleInfo)
 end
 
 local function addGarageMenuItems(destinationOptions, sourceOptions)
@@ -563,3 +607,4 @@ CreateThread(function()
         })
     end
 end)
+

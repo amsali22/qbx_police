@@ -147,11 +147,16 @@ return {
             {coords = vec4(-823.3688, -1146.980, 8.0, 300.0), speedlimit = 35},
         },
     },
-
     carItems = {
-        {name = 'water', amount = 2, info = {}, type = 'item', slot = 1},
-        {name = 'bandage', amount = 10, info = {}, type = 'item', slot = 2},
-        { name = 'WEAPON_BAT', amount = 1,  info = {}, type = 'item', slot = 3 },
+        ['police'] = { --- Model name
+            { name = 'bandage', amount = 2, info = {}, type = 'item', slot = 1 },
+            { name = 'water',   amount = 2, info = {}, type = 'item', slot = 2 },
+            { name = 'WEAPON_BAT', amount = 1, info = {}, type = 'item', slot = 3 },
+        },
+        ['police2'] = {
+            { name = 'armor',      amount = 2, info = {}, type = 'item', slot = 1 },
+            { name = 'WEAPON_FIREEXTINGUISHER', amount = 1, info = {}, type = 'item', slot = 2 },
+        },
     },
 
     vehicleSettings = {

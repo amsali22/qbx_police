@@ -559,7 +559,7 @@ RegisterNetEvent('police:server:SetTracker', function(targetId)
     end
 end)
 
-RegisterNetEvent('police:server:AddVehicleTrunkItems', function(plate, carItems)
+RegisterNetEvent('police:server:AddVehicleTrunkItems', function(plate, carItems, vehicleModel)
     local src = source
     local player = exports.qbx_core:GetPlayer(src)
     if not player or player.PlayerData.job.type ~= 'leo' then return end
@@ -576,7 +576,7 @@ RegisterNetEvent('police:server:AddVehicleTrunkItems', function(plate, carItems)
             if item.name and item.amount > 0 then
                 local success, response = exports.ox_inventory:AddItem(trunkId, item.name, item.amount, item.info or {})
                 if success then
-                    print(('Added %d %s to police vehicle trunk %s'):format(item.amount, item.name, plate))
+                    print(('Added %d %s to %s trunk %s'):format(item.amount, item.name, vehicleModel or 'police vehicle', plate))
                     itemsAdded = itemsAdded + 1
                 else
                     print(('Failed to add %s to trunk %s: %s'):format(item.name, plate, response))
